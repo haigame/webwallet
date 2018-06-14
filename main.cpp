@@ -193,7 +193,7 @@ xmreg::CurrentBlockchainStatus::start_monitor_blockchain_thread();
 // create REST JSON API services
 xmreg::YourMoneroRequests open_monero(mysql_accounts);
 
-// create Open Monero APIs
+// create MyArQmA WebWallet APIs
 MAKE_RESOURCE(login);
 MAKE_RESOURCE(get_address_txs);
 MAKE_RESOURCE(get_address_info);
@@ -208,7 +208,7 @@ MAKE_RESOURCE(get_version);
 // restbed service
 Service service;
 
-// Publish the Open Monero API created so that front end can use it
+// Publish the MyArQmA WebWallet API created so that front end can use it
 service.publish(login);
 service.publish(get_address_txs);
 service.publish(get_address_info);

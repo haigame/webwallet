@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
 set(PROJECT_NAME
-        openmonero)
+        webwallet)
 
 project(${PROJECT_NAME})
 
@@ -12,30 +12,30 @@ if(CMAKE_SIZEOF_VOID_P EQUAL "4")
   add_definitions(-DMDB_VL32)
 endif()
 
-if (NOT MONERO_DIR)
-    set(MONERO_DIR ~/monero)
+if (NOT ARQMA_DIR)
+    set(ARQMA_DIR ~/arqma)
 endif()
 
-message(STATUS MONERO_DIR ": ${MONERO_DIR}")
+message(STATUS ARQMA_DIR ": ${ARQMA_DIR}")
 
-set(MONERO_SOURCE_DIR ${MONERO_DIR}
-        CACHE PATH "Path to the root directory for Monero")
+set(ARQMA_SOURCE_DIR ${ARQMA_DIR}
+        CACHE PATH "Path to the root directory for Arqma")
 
-# set location of monero build tree
-set(MONERO_BUILD_DIR ${MONERO_SOURCE_DIR}/build/release/
-        CACHE PATH "Path to the build directory for Monero")
+# set location of arqma build tree
+set(ARQMA_BUILD_DIR ${ARQMA_SOURCE_DIR}/build/release/
+        CACHE PATH "Path to the build directory for Arqma")
 
 set(MY_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake"
         CACHE PATH "The path to the cmake directory of the current project")
 
 list(APPEND CMAKE_MODULE_PATH "${MY_CMAKE_DIR}")
 
-set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${MONERO_BUILD_DIR}"
-        CACHE PATH "Add Monero directory for library searching")
+set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${ARQMA_BUILD_DIR}"
+        CACHE PATH "Add Arqma directory for library searching")
 
 include(MyUtils)
 
-find_package(Monero)
+find_package(Arqma)
 
 include_directories(/usr/include/mysql)
 
@@ -46,14 +46,14 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories("ext/restbed/source")
 
 include_directories(
-    ${MONERO_SOURCE_DIR}/build
+    ${ARQMA_SOURCE_DIR}/build
     /usr/local/include
     /usr/local/include/mysql
     /usr/local/opt/openssl/include
 )
 
 link_directories(
-    ${MONERO_BUILD_DIR}/src/crypto
+    ${ARQMA_BUILD_DIR}/src/crypto
     /usr/local/lib
     /usr/local/opt/openssl/lib
 )
@@ -100,7 +100,6 @@ set(LIBRARIES
         cryptonote_basic
         daemonizer
         cncrypto
-        blocks
         lmdb
         ringct
         ringct_basic

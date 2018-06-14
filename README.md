@@ -1,15 +1,10 @@
-# Open Monero - a fully open sourced implementation of MyMonero backend
-
+# MyArQmA WebWallet (based at OpenMonero)
 In this example [restbed](https://github.com/Corvusoft/restbed/) is used to
-demonstrate how to provide Monero related JSON REST service. For this purpose,
+demonstrate how to provide ArQmA related JSON REST service. For this purpose,
  a service called Open Monero was developed.
 
 
-Open Monero is an open source implementation of backend of
-https://mymonero.com/. The frontend, which includes HTML, CSS, JavaScript, was adapted
-from (and originally developed by) https://mymonero.com/.
-
-Open Monero's backend is open sourced, free
+MyArQmA WebWallet backend is open sourced, free
 to use, host and modify. Additionally, some features were added/changed as compared
 to MyMonero. They include:
 
@@ -31,41 +26,28 @@ to MyMonero. They include:
  - new transaction details window.
  - sending xmr to a subaddress (not receiving nor generating subaddresses for now).
 
-## Live stagenet version
-
-- [http://172.104.45.209:81](http://172.104.45.209:81)
-
-This is Open Monero running on stagnet network. You can use it to play around with it.
-Please note that the live version isis running on cheap VPS, which may result in
-performance issues.
-
-
-## Screenshot
-
-![Open Monero](https://raw.githubusercontent.com/moneroexamples/openmonero/master/screenshot/screen1.png)
-
 
 ## Host it yourself
 
-The Open Monero consists of four components that need to be setup for it to work:
+MyArQmA WebWallet consists of four components that need to be setup for it to work:
 
  - MySql/Mariadb database - it stores user address (viewkey is not stored!),
  associated transactions, outputs, inputs and transaction import payments information.
  - Frontend - it is virtually same as that of MyMonero, except before mentioned differences.
   It consists of HTML, CSS, and JavaScript.
- - Monero daemon - daemon must be running and fully sync, as this is
+ - Arqma daemon - daemon must be running and fully sync, as this is
  where all transaction data is fetched from and used. Daemon also commits txs
- from the Open Monero into the Monero network.
+ from the MyArQmA WebWallet into the ArQ-Net.
  - Backend - fully written in C++. It uses [restbed](https://github.com/Corvusoft/restbed/) to serve JSON REST to the frontend
- and [mysql++](http://www.tangentsoft.net/mysql++/) to interface the database. It also accesses Monero blockchain and "talks"
- with Monero deamon.
+ and [mysql++](http://www.tangentsoft.net/mysql++/) to interface the database. It also accesses ArQmA blockchain and "talks"
+ with ArQmA deamon.
 
 
 ## Limitations
 
 #### Performance
 
-Open Monero is not as fast as MyMonero.
+MyArQmA WebWallet is not as fast as MyMonero.
  This is because it is basic, easy to understand and
  straight forward implementation of the backend. Thus,
  it does not use any special memory buffers/caches for transactions,
@@ -78,16 +60,16 @@ Open Monero is not as fast as MyMonero.
 
 ## Example compilation on Ubuntu 18.04
 
-Below are example and basic instructions on how to setup up and run Open Monero on Ubuntu 16.04.
+Below are example and basic instructions on how to setup up and run MyArQmA WebWallet on Ubuntu 16.04.
 For other Linux operating systems, the instructions are analogical.
 
 
-#### Monero download and compilation
+#### ArQmA download and compilation
 
-Download and compile recent Monero into your home folder:
+Download and compile recent ArQmA into your home folder:
 
 ```bash
-# first install monero dependecines
+# first install arqma dependecines
 sudo apt update
 
 sudo apt install git build-essential cmake libboost-all-dev miniupnpc libunbound-dev graphviz doxygen libunwind-dev pkg-config libssl-dev libcurl4-openssl-dev libgtest-dev libreadline-dev libzmq3-dev libsodium-dev libpcsclite-dev
@@ -95,19 +77,16 @@ sudo apt install git build-essential cmake libboost-all-dev miniupnpc libunbound
 # go to home folder
 cd ~
 
-git clone --recursive https://github.com/monero-project/monero
+git clone --recursive https://github.com/arqma/arqma
 
-cd monero/
-
-# checkout last monero version
-git checkout -b last_release v0.12.0.0
+cd arqma/
 
 make
 ```
 
-#### Compilation of the Open Monero (don't run it yet)
+#### Compilation of the MyArQmA WebWallet (don't run it yet)
 
-Once Monero was downloaded and compiled, we can download Open Monero and compile it.
+Once ArQmA was downloaded and compiled, we can download MyArQmA WebWallet and compile it.
 In fact we could postpone compilation to later, but
 we can just do it now, to see if it compiles. But don't run it yet. It will not
 work without database, setup frontend, and synced and running monero blockchain.
@@ -119,16 +98,16 @@ sudo apt install libmysql++-dev
 # go to home folder if still in ~/monero
 cd ~
 
-git clone https://github.com/moneroexamples/openmonero.git
+git clone https://github.com/arqma/webwallet.git
 
-cd openmonero
+cd webwallet
 
 mkdir build && cd build
 
 cmake ..
 
-# altearnatively can use cmake -DMONERO_DIR=/path/to/monero_folder ..
-# if monero is not in ~/monero
+# altearnatively can use cmake -DMONERO_DIR=/path/to/arqma ..
+# if monero is not in ~/arqma
 
 make
 ```
@@ -140,15 +119,15 @@ sudo apt install mysql-server
 sudo mysql_secure_installation
 ```
 
-Download `openmonero.sql` provided and setup the `openmonero` database. `openmonero.sql` script will
-drop current `openmonero` if exist. So don't run it, if you have already some important information
-in the `openmonero` database.
+Download `webwallet.sql` provided and setup the `webwallet` database. `webwallet.sql` script will
+drop current `webwallet` if exist. So don't run it, if you have already some important information
+in the `webwallet` database.
 
 Assuming we are still in `build` folder:
 
 ```bash
 # apply it to mysql
-mysql -p -u root < ../sql/openmonero.sql
+mysql -p -u root < ../sql/webwallet.sql
 ```
 
 #### Lighttpd and frontend
@@ -159,11 +138,11 @@ sudo apt-get install lighttpd
 Assuming you are still in `build` folder, copy frontend source files into lighttpd www folder.
 
 ```bash
-sudo mkdir /var/www/html/openmonero
-sudo cp -rvf ../html/* /var/www/html/openmonero/
+sudo mkdir /var/www/html/webwallet
+sudo cp -rvf ../html/* /var/www/html/webwallet/
 ```
 
-Setup document root in `lighttpd.conf` into openmonero folder
+Setup document root in `lighttpd.conf` into webwallet folder
 
 ```bash
 sudo vim /etc/lighttpd/lighttpd.conf
@@ -172,7 +151,7 @@ sudo vim /etc/lighttpd/lighttpd.conf
 and change `server.document-root` into:
 
 ```bash
-server.document-root    = "/var/www/html/openmonero"
+server.document-root    = "/var/www/html/webwallet"
 ```
 
 Restart lighttpd to see the change:
@@ -184,12 +163,12 @@ sudo systemctl restart lighttpd
 Go to localhost (http://127.0.0.1) and check if frontend is working.
 
 
-#### Run Open Monero
+#### Run MyArQmA WebWallet
 
 Command line options
 
 ```bash
-./openmonero -h
+./webwallet -h
   -h [ --help ] [=arg(=1)] (=0)         produce help message
   -t [ --testnet ] [=arg(=1)] (=0)      use testnet blockchain
   -s [ --stagenet ] [=arg(=1)] (=0)     use stagenet blockchain
@@ -197,43 +176,43 @@ Command line options
                                         useful when testing construction and
                                         submiting txs
   -p [ --port ] arg (=1984)             default port for restbed service of
-                                        Open Monero
+                                        MyArQmA WebWallet
   -c [ --config-file ] arg (=./config/config.json)
                                         Config file path.
 ```
 
 Other backend options are in `confing/config.json`.
 
-Before running `openmonero`:
+Before running `webwallet`:
 
  - edit `config/config.js` file with your settings. Especially set `frontend-url` and `database`
  connection details.
  - set `apiUrl` in `html\js\config.js` and `nettype` option. Last slash `/` in `apiUrl` is important.
  If running backend for testnet or stagenet networks, frontend `nettype` must be set to  
  1 - TESTNET or 2 - STAGENET. 0 is for MAINNET.
- - make sure monero daemon is running and fully sync. If using testnet or stagenet networks, use monero daemon
+ - make sure monero daemon is running and fully sync. If using testnet or stagenet networks, use arqma daemon
  with `--testnet` or `--stagenet` flags!
 
 
 To start for mainnet:
 ```bash
-./openmonero
+./webwallet
 ```
 
 To start for testnet:
 ```bash
-./openmonero -t
+./webwallet -t
 ```
 
 To start for stagenet:
 ```bash
-./openmonero -s
+./webwallet -s
 ```
 
 To start for stagenet with non-default location of `config.json` file:
 
 ```bash
-./openmonero -s -c /path/to/config.json
+./webwallet -s -c /path/to/config.json
 ```
 
 
@@ -544,12 +523,6 @@ openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
 openssl dhparam -out dh2048.pem 2048
 ```
 
-
-## Other examples
-
-Other examples can be found on  [github](https://github.com/moneroexamples?tab=repositories).
-Please know that some of the examples/repositories are not
-finished and may not work as intended.
 
 ## How can you help?
 

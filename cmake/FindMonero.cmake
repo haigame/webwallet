@@ -2,8 +2,8 @@
 # CMake helper for the majority of the cpp-ethereum modules.
 #
 # This module defines
-#     Monero_XXX_LIBRARIES, the libraries needed to use ethereum.
-#     Monero_FOUND, If false, do not try to use ethereum.
+#     Arqma_XXX_LIBRARIES, the libraries needed to use ethereum.
+#     Arqma_FOUND, If false, do not try to use ethereum.
 #
 # File addetped from cpp-ethereum
 #
@@ -32,7 +32,7 @@ set(LIBS common;blocks;cryptonote_basic;cryptonote_core;
 		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;device;
 		blockchain_db;ringct;wallet;cncrypto;easylogging;version;checkpoints)
 
-set(Xmr_INCLUDE_DIRS "${CPP_MONERO_DIR}")
+set(Xmr_INCLUDE_DIRS "${CPP_ARQMA_DIR}")
 
 # if the project is a subset of main cpp-ethereum project
 # use same pattern for variables as Boost uses
@@ -58,20 +58,20 @@ foreach (l ${LIBS})
 endforeach()
 
 
-if (EXISTS ${MONERO_BUILD_DIR}/src/ringct/libringct_basic.a)
+if (EXISTS ${ARQMA_BUILD_DIR}/src/ringct/libringct_basic.a)
 	message(STATUS FindMonero " found libringct_basic.a")
 	add_library(ringct_basic STATIC IMPORTED)
 	set_property(TARGET ringct_basic
-			PROPERTY IMPORTED_LOCATION ${MONERO_BUILD_DIR}/src/ringct/libringct_basic.a)
+			PROPERTY IMPORTED_LOCATION ${ARQMA_BUILD_DIR}/src/ringct/libringct_basic.a)
 endif()
 
-message(STATUS ${MONERO_SOURCE_DIR}/build)
+message(STATUS ${ARQMA_SOURCE_DIR}/build)
 
 # include monero headers
 include_directories(
-		${MONERO_SOURCE_DIR}/src
-		${MONERO_SOURCE_DIR}/external
-		${MONERO_SOURCE_DIR}/build
-		${MONERO_SOURCE_DIR}/external/easylogging++
-		${MONERO_SOURCE_DIR}/contrib/epee/include
-		${MONERO_SOURCE_DIR}/external/db_drivers/liblmdb)
+		${ARQMA_SOURCE_DIR}/src
+		${ARQMA_SOURCE_DIR}/external
+		${ARQMA_SOURCE_DIR}/build
+		${ARQMA_SOURCE_DIR}/external/easylogging++
+		${ARQMA_SOURCE_DIR}/contrib/epee/include
+		${ARQMA_SOURCE_DIR}/external/db_drivers/liblmdb)
